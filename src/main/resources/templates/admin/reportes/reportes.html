@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exportar Reportes</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        .report-card {
+            border: none;
+            border-radius: 24px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+            transition: 0.3s;
+        }
+
+        .report-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .btn-gradient {
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            border-radius: 14px;
+            padding: 0.7rem 1.4rem;
+            font-weight: 600;
+        }
+
+        .btn-gradient:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline-modern {
+            border-radius: 14px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container d-flex justify-content-center align-items-center"
+     style="min-height: 100vh;">
+
+    <div class="text-center w-100" style="max-width: 900px;">
+
+        <h1 class="fw-bold mb-3">Exportar Reportes 📊</h1>
+        <p class="text-muted mb-5">Descarga los reportes oficiales del sistema LibroVibe</p>
+
+        <div class="row g-4 justify-content-center">
+
+            <!-- Ventas -->
+            <div class="col-md-5">
+                <div class="card report-card p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-bar-chart-line-fill fs-1 text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold">Reporte de Ventas</h5>
+                    <p class="text-muted small">
+                        Historial completo de ventas del mes actual.
+                    </p>
+                    <a href="/admin/reportes/ventas/pdf"
+                       target="_blank"
+                       class="btn btn-gradient w-100 mt-3">
+                        <i class="bi bi-download me-2"></i>
+                        Descargar PDF
+                    </a>
+                </div>
+            </div>
+
+            <!-- Libros -->
+            <div class="col-md-5">
+                <div class="card report-card p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-journal-bookmark-fill fs-1 text-success"></i>
+                    </div>
+                    <h5 class="fw-bold">Reporte de Stock</h5>
+                    <p class="text-muted small">
+                        Listado general del inventario actual.
+                    </p>
+                    <a href="/admin/reportes/libros/pdf"
+                       target="_blank"
+                       class="btn btn-gradient w-100 mt-3">
+                        <i class="bi bi-download me-2"></i>
+                        Descargar PDF
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Botón volver -->
+        <div class="mt-5">
+            <a href="/admin/dashboard"
+               class="btn btn-outline-dark btn-outline-modern px-4 py-2">
+                <i class="bi bi-arrow-left me-2"></i>
+                Volver al Dashboard
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

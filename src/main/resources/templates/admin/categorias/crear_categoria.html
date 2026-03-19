@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Categoría - LibroVibe Elite</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .glass-card {
+            border: none;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-label { 
+            font-size: 0.8rem;
+            font-weight: 700; 
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            background-color: #fff;
+            border-color: #10b981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+
+        .icon-shape {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.6rem;
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-create {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 0.8rem 2rem;
+            font-weight: 700;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+            opacity: 0.95;
+        }
+
+        .step-indicator {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                
+                <nav aria-label="breadcrumb" class="mb-4" data-aos="fade-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}" class="text-decoration-none text-muted small">Admin</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/categorias}" class="text-decoration-none text-muted small">Categorías</a></li>
+                        <li class="breadcrumb-item active small fw-bold text-success">Nueva</li>
+                    </ol>
+                </nav>
+
+                <div class="card glass-card p-4" data-aos="zoom-in">
+                    <div class="d-flex align-items-center mb-5 pb-3 border-bottom">
+                        <div class="icon-shape me-3">
+                            <i class="bi bi-folder-plus"></i>
+                        </div>
+                        <div>
+                            <span class="step-indicator text-uppercase">Configuración de Catálogo</span>
+                            <h4 class="mb-0 fw-bold">Crear Nueva Categoría</h4>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/categorias/guardar}" th:object="${categoria}" method="post">
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Nombre del Género</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-0 bg-transparent ps-0">
+                                    <i class="bi bi-tag text-success"></i>
+                                </span>
+                                <input type="text" th:field="*{nombre}" class="form-control" 
+                                       placeholder="Ej: Realismo Mágico" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Descripción Detallada</label>
+                            <textarea th:field="*{descripcion}" class="form-control" rows="4" 
+                                      placeholder="Define brevemente qué tipo de obras se agruparán bajo este nombre..."></textarea>
+                        </div>
+
+                        <div class="p-3 rounded-4 mb-5" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                            <div class="d-flex">
+                                <i class="bi bi-lightbulb text-warning me-2"></i>
+                                <p class="small text-muted mb-0">
+                                    <strong>Consejo:</strong> Usa nombres cortos y descriptivos para que los filtros de la tienda sean fáciles de leer para los clientes.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center pt-4 border-top">
+                            <a th:href="@{/categorias}" class="text-decoration-none text-muted fw-bold small">
+                                <i class="bi bi-x-lg me-1"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-create shadow">
+                                <i class="bi bi-check-circle me-2"></i> Registrar Género
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true });
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="ventas_mes" language="java" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="34942c16-b541-4d06-8be7-73174c39b64d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL_Librovibe"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<query language="sql"><![CDATA[SELECT 
+    v.id_venta,
+    v.fecha_venta,
+    u.username,
+    v.total_venta
+FROM ventas v
+LEFT JOIN usuarios u 
+    ON v.id_usuario = u.id_usuario
+WHERE v.fecha_venta >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+ORDER BY v.fecha_venta DESC]]></query>
+	<field name="id_venta" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id_venta"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_venta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ventas"/>
+	</field>
+	<field name="fecha_venta" class="java.time.LocalDateTime">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_venta"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha_venta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ventas"/>
+	</field>
+	<field name="username" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="username"/>
+		<property name="com.jaspersoft.studio.field.label" value="username"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuarios"/>
+	</field>
+	<field name="total_venta" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_venta"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_venta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ventas"/>
+	</field>
+	<variable name="TOTAL_MES" incrementType="Report" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{total_venta}]]></expression>
+	</variable>
+	<background splitType="Stretch"/>
+	<title height="79" splitType="Stretch">
+		<element kind="staticText" uuid="00cf1303-6657-45b3-8c7d-e87b91177699" x="170" y="10" width="215" height="30" fontSize="16.0">
+			<text><![CDATA[Reporte De Ventas Del Mes]]></text>
+		</element>
+	</title>
+	<pageHeader height="35" splitType="Stretch"/>
+	<columnHeader height="61" splitType="Stretch">
+		<element kind="staticText" uuid="dc8675da-6f70-46b9-8fdd-6fd4816e3c72" x="300" y="10" width="100" height="30">
+			<text><![CDATA[ID Venta]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1088cbfd-cf48-4d30-a01c-537e957773fb"/>
+		</element>
+		<element kind="staticText" uuid="7b9375ed-ab83-4883-a37f-42e804145d8a" x="445" y="10" width="100" height="30">
+			<text><![CDATA[Fecha]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6d3a606c-e6af-4101-b730-3bc2685284ab"/>
+		</element>
+		<element kind="staticText" uuid="2da8011d-2fab-464e-b8d2-954fd9be2cfe" x="160" y="10" width="100" height="30">
+			<text><![CDATA[Usuario]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b693fbcd-5619-423b-80ae-872ef01639ce"/>
+		</element>
+		<element kind="staticText" uuid="a9070488-3d1e-4557-8855-5cd3f49bed95" x="40" y="10" width="100" height="30">
+			<text><![CDATA[Total (S/.)]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="41af1154-966b-43ce-8827-9d16d1b466de"/>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<element kind="textField" uuid="81927c45-c1a0-4216-8bae-113812446c49" x="300" y="30" width="100" height="30">
+				<expression><![CDATA[$F{id_venta}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1088cbfd-cf48-4d30-a01c-537e957773fb"/>
+			</element>
+			<element kind="textField" uuid="3b0e08d1-fd5d-4fcc-863c-d1c14dde3592" x="445" y="30" width="100" height="30">
+				<expression><![CDATA[$F{fecha_venta}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6d3a606c-e6af-4101-b730-3bc2685284ab"/>
+			</element>
+			<element kind="textField" uuid="e44072bf-4a38-4203-972c-07a1a1c58555" x="160" y="30" width="100" height="30">
+				<expression><![CDATA[$F{username}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b693fbcd-5619-423b-80ae-872ef01639ce"/>
+			</element>
+			<element kind="textField" uuid="f3dd01c3-f31d-4cd9-8b6b-62fb9f0f42e5" x="40" y="30" width="100" height="30" pattern="#,##0.00">
+				<expression><![CDATA[$F{total_venta}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="41af1154-966b-43ce-8827-9d16d1b466de"/>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<summary height="70" splitType="Stretch">
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</summary>
+</jasperReport>

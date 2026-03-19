@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Personal - LibroVibe Elite</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --bg-body: #f8fafc;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-body);
+            color: #1e293b;
+        }
+
+        .glass-card { 
+            border: none; 
+            border-radius: 24px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03); 
+            background: white; 
+        }
+
+        .table thead th { 
+            background: #f1f5f9; 
+            color: #64748b; 
+            text-transform: uppercase; 
+            font-size: 0.7rem; 
+            letter-spacing: 1px; 
+            border: none;
+            padding: 15px;
+        }
+
+        .table tbody td { padding: 18px 15px; border-bottom: 1px solid #f1f5f9; }
+
+        /* Badges de Rol */
+        .role-badge { 
+            padding: 6px 14px; 
+            border-radius: 10px; 
+            font-size: 0.7rem; 
+            font-weight: 700; 
+            display: inline-block;
+        }
+        .role-admin { background: #fee2e2; color: #dc2626; }
+        .role-client { background: #dcfce7; color: #16a34a; }
+
+        /* Estilos de Estado Dinámico */
+        .status-pill {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 50px;
+        }
+
+        .btn-action {
+            width: 36px; height: 36px;
+            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 10px; transition: 0.3s;
+        }
+
+        /* Efecto para filas inactivas */
+        .row-inactive {
+            opacity: 0.7;
+            background-color: #fcfcfc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid py-5 px-4">
+        
+        <nav aria-label="breadcrumb" class="mb-4" data-aos="fade-down">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}" class="text-decoration-none text-muted">Panel</a></li>
+                <li class="breadcrumb-item active fw-bold" aria-current="page">Usuarios</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-center mb-5" data-aos="fade-down" data-aos-delay="100">
+            <div class="d-flex align-items-center">
+                <a th:href="@{/admin/dashboard}" class="btn btn-white shadow-sm rounded-circle me-3 border" style="width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
+                    <i class="bi bi-arrow-left fs-5 text-dark"></i>
+                </a>
+                <div>
+                    <h1 class="h2 fw-bold mb-1">Comunidad LibroVibe</h1>
+                    <p class="text-muted small mb-0">Gestiona los roles y el estado de acceso de tus usuarios.</p>
+                </div>
+            </div>
+            
+            <div class="d-flex gap-2">
+                <a th:href="@{/usuarios/nuevo}" class="btn btn-primary px-4 rounded-pill fw-bold shadow">
+                    <i class="bi bi-person-plus-fill me-2"></i> Nuevo Usuario
+                </a>
+            </div>
+        </div>
+
+        <div class="card glass-card overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Identidad</th>
+                            <th>Correo Electrónico</th>
+                            <th>Rol Asignado</th>
+                            <th>Estado Actual</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="u : ${listaUsuarios}" th:classappend="${!u.activo} ? 'row-inactive' : ''">
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 42px; height: 42px;">
+                                        <span class="fw-bold text-primary" th:text="${#strings.substring(u.username,0,1).toUpperCase()}">U</span>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold" th:text="${u.username}">nombreUsuario</div>
+                                        <div class="text-muted" style="font-size: 0.75rem;">ID: #[[${u.idUsuario}]]</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="text-muted" th:text="${u.email}">email@ejemplo.com</span>
+                            </td>
+                            <td>
+                                <span th:if="${u.rol.name() == 'ROLE_ADMIN'}" class="role-badge role-admin">
+                                    <i class="bi bi-shield-check me-1"></i> ADMINISTRADOR
+                                </span>
+                                <span th:if="${u.rol.name() == 'ROLE_CLIENTE'}" class="role-badge role-client">
+                                    <i class="bi bi-person me-1"></i> CLIENTE
+                                </span>
+                            </td>
+                            <td>
+                                <span th:if="${u.activo}" class="status-pill bg-success bg-opacity-10 text-success">
+                                    <i class="bi bi-check-circle-fill me-1"></i> ACTIVO
+                                </span>
+                                <span th:unless="${u.activo}" class="status-pill bg-danger bg-opacity-10 text-danger">
+                                    <i class="bi bi-x-circle-fill me-1"></i> INACTIVO
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group gap-2">
+                                    <a th:href="@{/usuarios/editar/{id}(id=${u.idUsuario})}" 
+                                       class="btn btn-action btn-outline-primary" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+
+                                    <th:block th:if="${session.usuarioLogueado.idUsuario != u.idUsuario}">
+                                        <a th:href="@{/usuarios/eliminar/{id}(id=${u.idUsuario})}" 
+                                           class="btn btn-action btn-outline-danger" 
+                                           onclick="return confirm('¿Seguro que deseas eliminar este usuario?')">
+                                            <i class="bi bi-trash3"></i>
+                                        </a>
+                                    </th:block>
+                                    <th:block th:unless="${session.usuarioLogueado.idUsuario != u.idUsuario}">
+                                        <span class="btn btn-action btn-light text-muted" title="Cuenta propia">
+                                            <i class="bi bi-lock-fill"></i>
+                                        </span>
+                                    </th:block>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-between align-items-center">
+            <p class="text-muted small mb-0">
+                Mostrando <span class="fw-bold text-dark" th:text="${listaUsuarios.size()}">0</span> registros en total.
+            </p>
+            <div class="small">
+                <span class="me-3"><i class="bi bi-circle-fill text-success small me-1"></i> Operativo</span>
+                <span><i class="bi bi-circle-fill text-danger small me-1"></i> Suspendido</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true });
+    </script>
+</body>
+</html>

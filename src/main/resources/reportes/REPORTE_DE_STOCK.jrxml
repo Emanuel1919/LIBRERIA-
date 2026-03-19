@@ -1,0 +1,100 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="REPORTE DE STOCK" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0efe6f21-45ed-4467-b751-367b69660ccf">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL_Librovibe"/>
+	<query language="SQL"><![CDATA[SELECT 
+    l.titulo,
+    l.autor,
+    l.stock,
+    c.nombre AS categoria
+FROM libros l
+LEFT JOIN categorias c 
+    ON l.id_categoria = c.id_categoria
+ORDER BY l.stock ASC]]></query>
+	<field name="titulo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="titulo"/>
+		<property name="com.jaspersoft.studio.field.label" value="titulo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="libros"/>
+	</field>
+	<field name="autor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="autor"/>
+		<property name="com.jaspersoft.studio.field.label" value="autor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="libros"/>
+	</field>
+	<field name="stock" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="stock"/>
+		<property name="com.jaspersoft.studio.field.label" value="stock"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="libros"/>
+	</field>
+	<field name="categoria" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="categoria"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="categorias"/>
+	</field>
+	<sortField name="titulo" order="Descending"/>
+	<sortField name="autor" order="Descending"/>
+	<sortField name="stock" order="Descending"/>
+	<sortField name="categoria" order="Descending"/>
+	<variable name="titulo1" resetType="Column" calculation="Count" class="java.lang.Integer">
+		<expression><![CDATA[$F{titulo}]]></expression>
+	</variable>
+	<variable name="titulo2" resetType="Column" calculation="DistinctCount" class="java.lang.Integer">
+		<expression><![CDATA[$F{titulo}]]></expression>
+	</variable>
+	<group name="titulo">
+		<expression><![CDATA[$F{titulo}]]></expression>
+	</group>
+	<group name="autor">
+		<expression><![CDATA[$F{autor}]]></expression>
+	</group>
+	<group name="stock">
+		<expression><![CDATA[$F{stock}]]></expression>
+	</group>
+	<group name="categoria">
+		<expression><![CDATA[$F{categoria}]]></expression>
+	</group>
+	<background splitType="Stretch"/>
+	<title height="90" splitType="Stretch">
+		<element kind="staticText" uuid="8b357ccf-5c54-44cd-b351-7cc2f48722c3" x="200" y="10" width="180" height="30" fontSize="19.0" hTextAlign="Center">
+			<text><![CDATA[Reporte De Stock Actual]]></text>
+		</element>
+	</title>
+	<pageHeader height="35" splitType="Stretch"/>
+	<columnHeader height="76" splitType="Stretch">
+		<element kind="staticText" uuid="82f6265b-6850-43d9-b810-79c6cf45ebef" x="10" y="30" width="100" height="30">
+			<text><![CDATA[Titulo]]></text>
+		</element>
+		<element kind="staticText" uuid="23024a40-a077-4b38-b149-9b05b40bcc2d" x="160" y="30" width="100" height="30">
+			<text><![CDATA[Autor]]></text>
+		</element>
+		<element kind="staticText" uuid="ca9e72e9-a682-4172-9319-0166fb808d76" x="300" y="30" width="100" height="30">
+			<text><![CDATA[Stock]]></text>
+		</element>
+		<element kind="staticText" uuid="0238623f-2963-493c-bf7f-6ee30ec97687" x="442" y="29" width="100" height="30">
+			<text><![CDATA[Categoria]]></text>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<element kind="textField" uuid="cfab4b00-087f-464a-acef-ea3017a89c4e" x="10" y="32" width="100" height="30">
+				<expression><![CDATA[$F{titulo}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e27bef32-1251-47cd-a98f-68d3ae204280"/>
+			</element>
+			<element kind="textField" uuid="fdae3f1a-f087-46f1-a994-5415d731bff0" x="160" y="32" width="100" height="30">
+				<expression><![CDATA[$F{autor}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4603b3ae-5949-4804-a717-d09cbd671293"/>
+			</element>
+			<element kind="textField" uuid="24142085-2912-4d6e-bbc8-aa5b296cb949" x="310" y="32" width="60" height="30" markup="styled">
+				<expression><![CDATA[$F{stock}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7614164d-a65a-4219-ab4b-2df96b695a5b"/>
+			</element>
+			<element kind="textField" uuid="96003b34-a67d-4c96-8669-99a7a3da903e" x="450" y="32" width="100" height="30">
+				<expression><![CDATA[$F{categoria}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="060c662c-e6d2-492b-9deb-ec15e576279e"/>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch"/>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibroVibe - Tu Próxima Historia Comienza Aquí</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-book: #5d4037;
+            --accent-gold: #c7a17a;
+            --bg-cream: #fdfaf5;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-cream);
+            overflow-x: hidden;
+        }
+
+        h1, h2, .playfair { font-family: 'Playfair Display', serif; }
+
+        /* Navbar Estilo Glass */
+        .navbar {
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.85) !important;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .navbar-brand { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--primary-book) !important; font-weight: 700; }
+
+        /* Avatar de Usuario */
+        .avatar-circle {
+            width: 35px; height: 35px;
+            background: var(--primary-book);
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; border: 2px solid var(--accent-gold);
+        }
+
+        /* Hero con Parallax */
+        .hero-section {
+            height: 65vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex; align-items: center;
+            border-radius: 0 0 60px 60px;
+            color: white;
+        }
+
+        /* Botón Flotante Carrito */
+        .cart-fab {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            width: 70px; height: 70px;
+            background: var(--accent-gold);
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 15px 35px rgba(199, 161, 122, 0.4);
+            z-index: 1050;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+        }
+        .cart-fab:hover { transform: scale(1.1) rotate(10deg); color: white; }
+
+        /* Cards de Libros */
+        .book-card { 
+            border: none; border-radius: 25px;
+            background: white;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            overflow: hidden;
+        }
+        .book-card:hover { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(93, 64, 55, 0.12); }
+
+        .img-wrapper { height: 380px; overflow: hidden; position: relative; }
+        .card-img-top { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s; }
+        .book-card:hover .card-img-top { transform: scale(1.1); }
+
+        .category-badge { 
+            background: rgba(199, 161, 122, 0.15);
+            color: #8d6e63;
+            font-size: 0.7rem; font-weight: 700;
+            padding: 6px 14px; border-radius: 50px;
+        }
+
+        .price-text { font-size: 1.5rem; color: var(--primary-book); font-weight: 800; }
+
+        .btn-buy {
+            background: var(--primary-book); color: white;
+            border: none; border-radius: 15px; padding: 12px;
+            font-weight: 700; transition: 0.3s;
+        }
+        .btn-buy:hover { background: #3e2723; transform: scale(1.02); color: white; }
+
+        /* Admin Quick Tools */
+        .admin-tools {
+            position: absolute; top: 15px; right: 15px;
+            display: flex; flex-direction: column; gap: 8px; z-index: 20;
+        }
+        .btn-tool {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: white; border: none; display: flex;
+            align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s; color: #333;
+        }
+        .btn-tool:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <a th:href="@{/ventas/carrito}" class="cart-fab" data-aos="zoom-in" data-aos-delay="500">
+        <i class="bi bi-bag-heart-fill fs-3"></i>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow" 
+              th:text="${session.itemsCarrito != null ? session.itemsCarrito.size() : '0'}">0</span>
+    </a>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">📚 LibroVibe</a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="bi bi-list fs-1"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item" th:if="${session.usuarioLogueado == null}">
+                        <a class="btn btn-outline-dark px-4 rounded-pill fw-bold" th:href="@{/login}">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
+                        </a>
+                    </li>
+
+                    <li class="nav-item" th:if="${session.usuarioLogueado != null and session.usuarioLogueado.rol.name() == 'ROLE_ADMIN'}">
+                        <a class="btn btn-warning fw-bold px-4 rounded-pill shadow-sm me-3" th:href="@{/admin/dashboard}">
+                            <i class="bi bi-speedometer2 me-2"></i>PANEL CONTROL
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown" th:if="${session.usuarioLogueado != null}">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDrop" role="button" data-bs-toggle="dropdown">
+                            <div class="avatar-circle me-2">
+                                <span th:text="${#strings.substring(session.usuarioLogueado.username,0,1).toUpperCase()}">U</span>
+                            </div>
+                            <span class="fw-bold" th:text="${session.usuarioLogueado.username}">Usuario</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2 mt-3 rounded-4">
+                            <li><a class="dropdown-item rounded-3" th:href="@{/perfil}"><i class="bi bi-person me-2"></i>Mi Perfil</a></li>
+                            <li th:if="${session.usuarioLogueado.rol.name() == 'ROLE_CLIENTE'}">
+                                <a class="dropdown-item rounded-3" th:href="@{/mis-compras}"><i class="bi bi-box-seam me-2"></i>Mis Compras</a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item rounded-3 text-danger" th:href="@{/logout}"><i class="bi bi-power me-2"></i>Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section text-center">
+        <div class="container" data-aos="zoom-out" data-aos-duration="1200">
+            <h1 class="display-1 fw-bold mb-3">Encuentra tu próxima <br> <span style="color: var(--accent-gold)">gran aventura.</span></h1>
+            <p class="lead opacity-75 fs-4">Explora miles de mundos a través de nuestras páginas.</p>
+            <a href="#catalogo" class="btn btn-light btn-lg rounded-pill px-5 py-3 mt-4 fw-bold shadow">Explorar Ahora</a>
+        </div>
+    </header>
+
+    <main class="container py-5" id="catalogo">
+        <div class="d-flex align-items-center mb-5" data-aos="fade-right">
+            <h2 class="display-6 fw-bold mb-0 me-4">Catálogo Exclusivo</h2>
+            <div class="flex-grow-1 border-top opacity-25"></div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-5">
+            <div class="col" th:each="libro, iter : ${libros}">
+                <div class="card h-100 book-card" th:data-aos-delay="${iter.index * 50}" data-aos="fade-up">
+                    
+                    <div class="img-wrapper">
+                        <img th:src="@{${libro.imagenUrl}}" class="card-img-top" alt="Portada"
+                             onerror="this.src='https://via.placeholder.com/400x600?text=LibroVibe'">
+                        
+                        <div th:if="${session.usuarioLogueado != null and session.usuarioLogueado.rol.name() == 'ROLE_ADMIN'}" 
+                             class="admin-tools">
+                            <a th:href="@{/libros/editar/{id}(id=${libro.idLibro})}" class="btn-tool text-primary">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            <a th:href="@{/libros/eliminar/{id}(id=${libro.idLibro})}" class="btn-tool text-danger" 
+                               onclick="return confirm('¿Seguro que deseas eliminar este libro?')">
+                                <i class="bi bi-trash3-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body px-4 pt-4">
+                        <span class="category-badge mb-3 d-inline-block" th:text="${libro.categoria.nombre}">Género</span>
+                        <h5 class="card-title fw-bold mb-1 text-truncate" th:text="${libro.titulo}">Título</h5>
+                        <p class="text-muted small mb-3" th:text="${libro.autor}">Autor del Libro</p>
+                        <div class="price-text" th:text="'S/ ' + ${#numbers.formatDecimal(libro.precio, 1, 2)}">S/ 0.00</div>
+                    </div>
+                    
+                    <div class="card-footer bg-transparent border-0 px-4 pb-4 mt-2">
+                        <a th:href="@{/ventas/nueva(idLibro=${libro.idLibro})}" class="btn btn-buy w-100 shadow-sm">
+                            <i class="bi bi-cart-plus me-2"></i> Añadir al Carrito
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-5 mt-5 rounded-top-5">
+        <div class="container text-center">
+            <h2 class="playfair mb-4">📚 LibroVibe</h2>
+            <div class="d-flex justify-content-center gap-4 mb-4 fs-4 text-white-50">
+                <i class="bi bi-instagram"></i><i class="bi bi-facebook"></i><i class="bi bi-twitter-x"></i>
+            </div>
+            <p class="small opacity-50">&copy; 2026 LibroVibe. Calidad literaria para el mundo.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true, easing: 'ease-out-back' });
+    </script>
+</body>
+</html>
